@@ -2,10 +2,17 @@
 
 import { useState, useRef, useEffect } from "react";
 
+// interface Message {
+//   role: "user" | "assistant";
+//   content: string;
+//   timestamp: Date;
+// }
+
 interface Message {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
+  model_used?: string;  // ← add this
 }
 
 interface QuickBtn {
@@ -71,6 +78,7 @@ export default function Home() {
         role: "assistant",
         content: data.answer || "Sorry, something went wrong.",
         timestamp: new Date(),
+        model_used: data.model_used || undefined,  // ← add this
       };
       setMessages((prev) => [...prev, botMsg]);
     } catch {
@@ -262,8 +270,25 @@ export default function Home() {
                 boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
               }}>
                 {msg.role === "assistant" ? formatMessage(msg.content) : msg.content}
-                <div style={{ fontSize: 10, color: msg.role === "user" ? "rgba(232,245,232,0.5)" : "#9ca3af", marginTop: 4, textAlign: "right" }}>
-                  {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8, paddingTop: 6, borderTop: msg.role === "assistant" ? "0.5px solid #f0f0f0" : "none" }}>
+                  {msg.role === "assistant" && msg.model_used ? (
+                    <span style={{
+                      fontSize: 11,
+                      background: msg.model_used === "Groq" ? "#f0fdf4" : "#eff6ff",
+                      color: msg.model_used === "Groq" ? "#3b6d11" : "#1d4ed8",
+                      border: `0.5px solid ${msg.model_used === "Groq" ? "#bbf7d0" : "#bfdbfe"}`,
+                      borderRadius: 20,
+                      padding: "3px 10px",
+                      fontWeight: 500,
+                    }}>
+                      🤖 {msg.model_used === "Groq" ? "Groq LLaMA-3.3-70b" : "Gemini 2.5 Flash"}
+                    </span>
+                  ) : (
+                    <span />
+                  )}
+                  <span style={{ fontSize: 10, color: msg.role === "user" ? "rgba(232,245,232,0.5)" : "#9ca3af" }}>
+                    {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  </span>
                 </div>
               </div>
             </div>
