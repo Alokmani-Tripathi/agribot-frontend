@@ -629,21 +629,23 @@ export default function Home() {
                 <div
                   className="input-bar-wrap"
                   style={{
-                    padding: "8px 12px",
-                    paddingBottom: "max(12px, env(safe-area-inset-bottom))",
-                    background: "#fff",
-                    borderTop: "0.5px solid #e5e7eb",
-                    flexShrink: 0,          // ← NEVER shrink
+                    padding: "10px 12px",
+                    paddingBottom: "max(14px, env(safe-area-inset-bottom))",
+                    background: "#f0fdf4",                            // AgriBot light green
+                    borderTop: "1px solid #d1fae5",                   // AgriBot border green
+                    boxShadow: "0 -2px 8px rgba(45,90,45,0.07)",      // green-tinted shadow
+                    flexShrink: 0,
                     zIndex: 10,
                   }}
                 >
                   <div style={{ maxWidth: 760, margin: "0 auto" }} className="input-inner">
+ 
                     {/* Quick chips — hidden on mobile, visible on desktop only */}
                     {!isMobile && (
-                      <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>
+                      <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
                         {quickButtons.map(btn => (
                           <button key={btn.label} className="quick-chip" onClick={() => sendMessage(btn.query)} disabled={loading}
-                            style={{ fontSize: 11, padding: "5px 11px", border: "0.5px solid #d1fae5", borderRadius: 20, background: "#f0fdf4", color: "#3b6d11", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
+                            style={{ fontSize: 11, padding: "5px 11px", border: "0.5px solid #bbf7d0", borderRadius: 20, background: "#dcfce7", color: "#3b6d11", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
                             <span>{btn.icon}</span>
                             <span className="chip-label">{btn.label}</span>
                           </button>
@@ -651,27 +653,69 @@ export default function Home() {
                       </div>
                     )}
  
-                    {/* Text input row */}
-                    <div style={{ display: "flex", gap: 8, alignItems: "center", background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 14, padding: "10px 13px" }}>
-                      <input
-                        ref={inputRef}
-                        value={input}
-                        onChange={e => setInput(e.target.value)}
-                        onKeyDown={e => e.key === "Enter" && !e.shiftKey && sendMessage()}
-                        // When the soft keyboard opens on mobile it fires a
-                        // visualViewport resize event which updates --app-height,
-                        // resizing the layout so the input bar is always visible.
-                        onFocus={() => {
-                          setTimeout(() => {
-                            inputRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-                          }, 350); // slight delay lets the keyboard finish animating
+                    {/* Input row */}
+                    <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+ 
+                      {/* Pill input box — white on light-green bg, green focus ring */}
+                      <div style={{
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        background: "#ffffff",
+                        borderRadius: 26,
+                        padding: "11px 18px",
+                        border: "1.5px solid #bbf7d0",               // AgriBot border green
+                        boxShadow: "0 1px 4px rgba(45,90,45,0.08)",  // soft green shadow
+                        minWidth: 0,
+                      }}>
+                        <input
+                          ref={inputRef}
+                          value={input}
+                          onChange={e => setInput(e.target.value)}
+                          onKeyDown={e => e.key === "Enter" && !e.shiftKey && sendMessage()}
+                          onFocus={() => {
+                            setTimeout(() => {
+                              inputRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                            }, 350);
+                          }}
+                          placeholder="Ask your farming question..."
+                          disabled={loading}
+                          style={{
+                            flex: 1,
+                            background: "none",
+                            border: "none",
+                            outline: "none",
+                            fontSize: 15,
+                            color: "#1a3a0a",                         // AgriBot dark green text
+                            minWidth: 0,
+                          }}
+                        />
+                      </div>
+ 
+                      {/* Round send button — AgriBot dark green */}
+                      <button
+                        className="send-btn"
+                        onClick={() => sendMessage()}
+                        disabled={loading || !input.trim()}
+                        style={{
+                          width: 46,
+                          height: 46,
+                          background: input.trim() ? "#2d5a2d" : "#bbf7d0",  // dark green active, light green inactive
+                          border: "none",
+                          borderRadius: "50%",
+                          color: input.trim() ? "#ffffff" : "#6b9e6b",
+                          cursor: input.trim() ? "pointer" : "not-allowed",
+                          fontSize: 18,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          boxShadow: input.trim() ? "0 2px 10px rgba(45,90,45,0.40)" : "none",
+                          transition: "all 0.2s ease",
                         }}
-                        placeholder="Ask your farming question..."
-                        disabled={loading}
-                        style={{ flex: 1, background: "none", border: "none", outline: "none", fontSize: 14, color: "#1a1a1a", minWidth: 0 }}
-                      />
-                      <button className="send-btn" onClick={() => sendMessage()} disabled={loading || !input.trim()}
-                        style={{ width: 36, height: 36, background: input.trim() ? "#2d5a2d" : "#e5e7eb", border: "none", borderRadius: 9, color: "white", cursor: input.trim() ? "pointer" : "not-allowed", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>➤</button>
+                      >
+                        ➤
+                      </button>
                     </div>
                   </div>
                 </div>
