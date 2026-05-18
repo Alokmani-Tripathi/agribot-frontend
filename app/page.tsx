@@ -207,25 +207,40 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkSize);
   }, []);
  
-  // ── FIX: Use window.visualViewport to get the REAL visible height on mobile.
-  //    On Android Chrome when keyboard opens:
-  //      visualViewport.height  → shrinks (excludes keyboard)
-  //      visualViewport.offsetTop → shifts (non-zero when page scrolled)
-  //    We directly update the app-root top + height so the layout always
-  //    fits exactly the visible area — input bar never hidden behind keyboard.
+  // ── KEYBOARD FIX ──────────────────────────────────────────────────────────
+  // On Android Chrome the keyboard accessory bar (autofill row) sits ABOVE
+  // the keyboard and is NOT subtracted from visualViewport.height, which is
+  // why the input bar appears cut off even after we resize the layout.
+  //
+  // Strategy:
+  //   1. Track visualViewport height/offsetTop and resize app-root accordingly
+  //   2. Also track whether keyboard is open (keyboardOpen state)
+  //   3. When keyboard is open, add extra paddingBottom to the input bar
+  //      via a CSS class so the bar clears the accessory row
   useEffect(() => {
+    let lastH = window.visualViewport?.height ?? window.innerHeight;
+ 
     const updateVh = () => {
       const vv = window.visualViewport;
       const h = vv?.height ?? window.innerHeight;
       const offsetTop = vv?.offsetTop ?? 0;
       setViewportH(h);
       document.documentElement.style.setProperty("--app-height", `${h}px`);
-      // Directly reposition the fixed root to follow the visual viewport
+ 
+      // Reposition fixed root to sit exactly in the visual viewport
       const root = document.querySelector(".app-root") as HTMLElement | null;
       if (root) {
-        root.style.top = `${offsetTop}px`;
+        root.style.top    = `${offsetTop}px`;
         root.style.height = `${h}px`;
       }
+ 
+      // Mark keyboard as open/closed so input bar can add extra padding
+      const keyboardOpen = h < lastH - 100;
+      document.documentElement.style.setProperty(
+        "--keyboard-extra-pb",
+        keyboardOpen ? "52px" : "28px"   // 52px clears the accessory bar
+      );
+      lastH = h;
     };
     updateVh();
  
@@ -642,7 +657,7 @@ export default function Home() {
                   style={{
                     padding: "10px 12px",
                     paddingBottom: isMobile
-                      ? "max(28px, env(safe-area-inset-bottom))"   // generous bottom gap on mobile
+                      ? "var(--keyboard-extra-pb, 28px)"   // dynamic: 52px when keyboard open, 28px when closed
                       : "max(16px, env(safe-area-inset-bottom))",  // normal on desktop
                     background: "#ffffff",
                     borderTop: "1px solid #d1fae5",
