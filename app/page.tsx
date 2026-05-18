@@ -1,9 +1,9 @@
 
-
-
 // "use client";
  
 // import { useState, useRef, useEffect } from "react";
+// import ReactMarkdown from "react-markdown";
+// import remarkGfm from "remark-gfm";
  
 // interface Message {
 //   role: "user" | "assistant";
@@ -20,9 +20,9 @@
  
 // const quickButtons: QuickBtn[] = [
 //   { label: "Best crops for black soil", icon: "🌱", query: "What are the best crops for black soil?" },
-//   { label: "Delhi weather today", icon: "🌤️", query: "What is the weather in Delhi today?" },
-//   { label: "PM Kisan scheme 2025", icon: "🏛️", query: "What are the latest PM Kisan scheme benefits 2025?" },
-//   { label: "Wheat farming guide", icon: "🌾", query: "How to grow wheat crop? Complete guide." },
+//   { label: "Delhi weather today",        icon: "🌤️", query: "What is the weather in Delhi today?" },
+//   { label: "PM Kisan scheme 2025",       icon: "🏛️", query: "What are the latest PM Kisan scheme benefits 2025?" },
+//   { label: "Wheat farming guide",        icon: "🌾", query: "How to grow wheat crop? Complete guide." },
 // ];
  
 // const FarmerIcon = () => (
@@ -40,12 +40,24 @@
 //   </svg>
 // );
  
-// // Always ☰ — never changes to ✕
 // const HamburgerIcon = () => (
-//   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+//   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
 //     <line x1="3" y1="7"  x2="21" y2="7"  stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
 //     <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
 //     <line x1="3" y1="17" x2="21" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+//   </svg>
+// );
+ 
+// const CopyIcon = () => (
+//   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+//     <rect x="9" y="9" width="13" height="13" rx="2" />
+//     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+//   </svg>
+// );
+ 
+// const CheckIcon = () => (
+//   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+//     <polyline points="20 6 9 17 4 12" />
 //   </svg>
 // );
  
@@ -56,21 +68,135 @@
 // };
  
 // const SIDEBAR_WIDTH = 270;
+// const HEADER_H = 62;
  
+// // ── Themed markdown renderer ──────────────────────────────────────────────────
+// function MarkdownContent({ content }: { content: string }) {
+//   const parts = content.split("---");
+//   const mainText = parts[0].trim();
+//   const sourceSection = parts[1];
+ 
+//   return (
+//     <div>
+//       <div className="agri-markdown">
+//         <ReactMarkdown
+//           remarkPlugins={[remarkGfm]}
+//           components={{
+//             p: ({ children }) => (
+//               <p style={{ margin: "0 0 10px", lineHeight: 1.75, color: "#1a1a1a" }}>{children}</p>
+//             ),
+//             h1: ({ children }) => (
+//               <h1 style={{ fontSize: 18, fontWeight: 700, color: "#1a3a0a", margin: "14px 0 8px", borderBottom: "1.5px solid #bbf7d0", paddingBottom: 4 }}>{children}</h1>
+//             ),
+//             h2: ({ children }) => (
+//               <h2 style={{ fontSize: 16, fontWeight: 700, color: "#1a3a0a", margin: "12px 0 6px", borderBottom: "1px solid #d1fae5", paddingBottom: 3 }}>{children}</h2>
+//             ),
+//             h3: ({ children }) => (
+//               <h3 style={{ fontSize: 14, fontWeight: 600, color: "#2d5a2d", margin: "10px 0 5px" }}>{children}</h3>
+//             ),
+//             strong: ({ children }) => (
+//               <strong style={{ fontWeight: 700, color: "#1a3a0a" }}>{children}</strong>
+//             ),
+//             em: ({ children }) => (
+//               <em style={{ fontStyle: "italic", color: "#3b5a1a" }}>{children}</em>
+//             ),
+//             ul: ({ children }) => (
+//               <ul style={{ margin: "6px 0 10px", paddingLeft: 0, listStyle: "none" }}>{children}</ul>
+//             ),
+//             ol: ({ children }) => (
+//               <ol style={{ margin: "6px 0 10px", paddingLeft: 20 }}>{children}</ol>
+//             ),
+//             li: ({ children }) => (
+//               <li style={{ margin: "5px 0", lineHeight: 1.65, color: "#1a1a1a", display: "flex", alignItems: "flex-start", gap: 8 }}>
+//                 <span style={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", background: "#3b6d11", marginTop: 8, flexShrink: 0 }} />
+//                 <span style={{ flex: 1 }}>{children}</span>
+//               </li>
+//             ),
+//             code: ({ children, className }) => {
+//               const isBlock = !!className?.startsWith("language-");
+//               if (isBlock) return (
+//                 <pre style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 8, padding: "10px 14px", overflowX: "auto", margin: "8px 0", fontSize: 13 }}>
+//                   <code style={{ fontFamily: "'Fira Code','Courier New',monospace", color: "#14532d", lineHeight: 1.6 }}>{children}</code>
+//                 </pre>
+//               );
+//               return (
+//                 <code style={{ background: "#dcfce7", color: "#14532d", borderRadius: 4, padding: "1px 6px", fontSize: "0.88em", fontFamily: "'Fira Code','Courier New',monospace", border: "0.5px solid #bbf7d0" }}>{children}</code>
+//               );
+//             },
+//             blockquote: ({ children }) => (
+//               <blockquote style={{ borderLeft: "3px solid #4ade80", margin: "8px 0", background: "#f0fdf4", borderRadius: "0 6px 6px 0", padding: "8px 12px", color: "#374151" }}>{children}</blockquote>
+//             ),
+//             hr: () => <hr style={{ border: "none", borderTop: "1px solid #d1fae5", margin: "12px 0" }} />,
+//             a: ({ href, children }) => (
+//               <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "#3b6d11", textDecoration: "underline", textDecorationColor: "#86efac", textUnderlineOffset: 2 }}>{children}</a>
+//             ),
+//             table: ({ children }) => (
+//               <div style={{ overflowX: "auto", margin: "10px 0" }}>
+//                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13, border: "1px solid #d1fae5", borderRadius: 8, overflow: "hidden" }}>{children}</table>
+//               </div>
+//             ),
+//             thead: ({ children }) => <thead style={{ background: "#dcfce7" }}>{children}</thead>,
+//             th: ({ children }) => (
+//               <th style={{ padding: "8px 12px", textAlign: "left", fontWeight: 600, color: "#14532d", borderBottom: "1.5px solid #86efac", fontSize: 12, textTransform: "uppercase", letterSpacing: 0.5 }}>{children}</th>
+//             ),
+//             td: ({ children }) => (
+//               <td style={{ padding: "7px 12px", borderBottom: "0.5px solid #e8faf0", color: "#1a1a1a", verticalAlign: "top" }}>{children}</td>
+//             ),
+//             tr: ({ children }) => (
+//               <tr onMouseEnter={e => (e.currentTarget.style.background = "#f0fdf4")} onMouseLeave={e => (e.currentTarget.style.background = "transparent")}>{children}</tr>
+//             ),
+//           }}
+//         >
+//           {mainText}
+//         </ReactMarkdown>
+//       </div>
+ 
+//       {sourceSection && (
+//         <div style={{ marginTop: 10, paddingTop: 10, borderTop: "0.5px solid #d1fae5" }}>
+//           {sourceSection.split("\n").filter(Boolean).map((line, i) => {
+//             if (line.includes("📚")) return <p key={i} style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>{line.trim()}</p>;
+//             const urlMatch = line.match(/\[(.+?)\]\((.+?)\)/);
+//             if (urlMatch) return (
+//               <a key={i} href={urlMatch[2]} target="_blank" rel="noopener noreferrer" style={{ display: "block", fontSize: 12, color: "#3b6d11", textDecoration: "none", marginBottom: 3 }}>🔗 {urlMatch[1]}</a>
+//             );
+//             return <p key={i} style={{ fontSize: 12, color: "#6b7280" }}>{line.trim()}</p>;
+//           })}
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+ 
+// // ── Copy button ───────────────────────────────────────────────────────────────
+// function CopyButton({ text }: { text: string }) {
+//   const [copied, setCopied] = useState(false);
+//   const handle = async () => {
+//     await navigator.clipboard.writeText(text);
+//     setCopied(true);
+//     setTimeout(() => setCopied(false), 2000);
+//   };
+//   return (
+//     <button onClick={handle} title="Copy response" style={{ display: "flex", alignItems: "center", gap: 4, background: copied ? "#dcfce7" : "transparent", border: `0.5px solid ${copied ? "#86efac" : "#e5e7eb"}`, borderRadius: 6, padding: "3px 8px", cursor: "pointer", fontSize: 11, color: copied ? "#14532d" : "#9ca3af", transition: "all 0.2s ease" }}>
+//       {copied ? <CheckIcon /> : <CopyIcon />}
+//       <span>{copied ? "Copied!" : "Copy"}</span>
+//     </button>
+//   );
+// }
+ 
+// // ─────────────────────────────────────────────────────────────────────────────
 // export default function Home() {
-//   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
-//   const [input, setInput] = useState("");
-//   const [loading, setLoading] = useState(false);
+//   const [messages, setMessages]       = useState<Message[]>([INITIAL_MESSAGE]);
+//   const [input, setInput]             = useState("");
+//   const [loading, setLoading]         = useState(false);
 //   const [sidebarOpen, setSidebarOpen] = useState(true);
-//   const [isMobile, setIsMobile] = useState(false);
+//   const [isMobile, setIsMobile]       = useState(false);
 //   const chatEndRef = useRef<HTMLDivElement>(null);
  
 //   useEffect(() => {
 //     const checkSize = () => {
 //       const mobile = window.innerWidth < 768;
 //       setIsMobile(mobile);
-//       if (mobile) setSidebarOpen(false);
-//       else setSidebarOpen(true);
+//       setSidebarOpen(!mobile);
 //     };
 //     checkSize();
 //     window.addEventListener("resize", checkSize);
@@ -87,26 +213,26 @@
 //     const query = text || input.trim();
 //     if (!query || loading) return;
 //     const userMsg: Message = { role: "user", content: query, timestamp: new Date() };
-//     setMessages((prev) => [...prev, userMsg]);
+//     setMessages(prev => [...prev, userMsg]);
 //     setInput("");
 //     setLoading(true);
 //     if (isMobile) setSidebarOpen(false);
 //     try {
-//       const history = messages.map((m) => ({ role: m.role, content: m.content }));
+//       const history = messages.map(m => ({ role: m.role, content: m.content }));
 //       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat`, {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         body: JSON.stringify({ message: query, chat_history: history }),
 //       });
 //       const data = await res.json();
-//       setMessages((prev) => [...prev, {
+//       setMessages(prev => [...prev, {
 //         role: "assistant",
 //         content: data.answer || "Sorry, something went wrong.",
 //         timestamp: new Date(),
 //         model_used: data.model_used || undefined,
 //       }]);
 //     } catch {
-//       setMessages((prev) => [...prev, {
+//       setMessages(prev => [...prev, {
 //         role: "assistant",
 //         content: "⚠️ Error connecting to backend. Make sure the backend is running.",
 //         timestamp: new Date(),
@@ -116,132 +242,45 @@
 //     }
 //   };
  
-//   const formatMessage = (content: string) => {
-//     const parts = content.split("---");
-//     const mainText = parts[0];
-//     const sourceSection = parts[1];
-//     return (
-//       <div>
-//         <p style={{ whiteSpace: "pre-wrap", lineHeight: 1.7 }}>{mainText}</p>
-//         {sourceSection && (
-//           <div style={{ marginTop: 12, paddingTop: 10, borderTop: "0.5px solid #d1fae5" }}>
-//             {sourceSection.split("\n").filter(Boolean).map((line, i) => {
-//               if (line.includes("📚")) return <p key={i} style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>{line.trim()}</p>;
-//               const urlMatch = line.match(/\[(.+?)\]\((.+?)\)/);
-//               if (urlMatch) return (
-//                 <a key={i} href={urlMatch[2]} target="_blank" rel="noopener noreferrer"
-//                   style={{ display: "block", fontSize: 12, color: "#3b6d11", textDecoration: "none", marginBottom: 3 }}>
-//                   🔗 {urlMatch[1]}
-//                 </a>
-//               );
-//               return <p key={i} style={{ fontSize: 12, color: "#6b7280" }}>{line.trim()}</p>;
-//             })}
-//           </div>
-//         )}
-//       </div>
-//     );
-//   };
- 
 //   return (
 //     <>
 //       <style>{`
+//         .agri-markdown > *:last-child { margin-bottom: 0 !important; }
 //         @keyframes bounce {
 //           0%, 60%, 100% { transform: translateY(0); }
-//           30% { transform: translateY(-6px); }
+//           30%            { transform: translateY(-6px); }
 //         }
 //         @keyframes fadeSlideUp {
 //           from { opacity: 0; transform: translateY(18px); }
 //           to   { opacity: 1; transform: translateY(0); }
 //         }
-//         @keyframes fadeIn {
-//           from { opacity: 0; }
-//           to   { opacity: 1; }
-//         }
+//         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 //         .sidebar-transition {
 //           transition: transform 0.28s cubic-bezier(0.4,0,0.2,1),
-//                       margin 0.28s cubic-bezier(0.4,0,0.2,1);
+//                       margin  0.28s cubic-bezier(0.4,0,0.2,1);
 //         }
-//         .quick-chip:hover {
-//           background: #dcfce7 !important;
-//           border-color: #86efac !important;
-//           transform: translateY(-1px);
-//           box-shadow: 0 3px 10px rgba(45,90,45,0.12);
-//         }
+//         .quick-chip:hover { background: #dcfce7 !important; border-color: #86efac !important; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(45,90,45,0.12); }
 //         .quick-chip { transition: all 0.18s ease; }
 //         .send-btn:hover:not(:disabled) { background: #3b6d11 !important; transform: scale(1.04); }
 //         .send-btn { transition: all 0.18s ease; }
-//         .overlay-backdrop {
-//           position: fixed; inset: 0;
-//           background: rgba(0,0,0,0.45);
-//           z-index: 40;
-//           animation: fadeIn 0.2s ease;
-//         }
-//         .hamburger-btn {
-//           width: 38px; height: 38px;
-//           display: flex; align-items: center; justify-content: center;
-//           background: none;
-//           border: 0.5px solid #e5e7eb;
-//           border-radius: 8px; cursor: pointer;
-//           color: #3b6d11;
-//           flex-shrink: 0;
-//           transition: background 0.15s ease;
-//         }
+//         .overlay-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 40; animation: fadeIn 0.2s ease; }
+//         .hamburger-btn { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: none; border: 0.5px solid #e5e7eb; border-radius: 8px; cursor: pointer; color: #3b6d11; flex-shrink: 0; transition: background 0.15s ease; }
 //         .hamburger-btn:hover { background: #f0fdf4; }
-//         @media (max-width: 480px) {
-//           .chips-row { gap: 6px !important; }
+//         @media (max-width: 767px) {
+//           .app-root { position: fixed !important; inset: 0 !important; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
 //           .chip-label { display: none; }
 //         }
 //       `}</style>
  
-//       {/*
-//         ── LAYOUT STRUCTURE ──
-//         The entire page is a vertical flex column:
-//           1. HEADER  — full width, always on top, contains ☰
-//           2. BODY    — horizontal flex row: [SIDEBAR | CHAT]
-        
-//         This means the header NEVER moves — sidebar is below it, not beside it.
-//         The ☰ button is always at the same x,y position in the header.
-//       */}
-//       <div style={{
-//         display: "flex",
-//         flexDirection: "column",   // ← KEY: vertical stack (header on top)
-//         height: "100vh",
-//         fontFamily: "'Inter', sans-serif",
-//         overflow: "hidden",
-//       }}>
+//       <div className="app-root" style={{ display: "flex", flexDirection: "column", height: "100vh", fontFamily: "'Inter',sans-serif", overflow: "hidden" }}>
  
-//         {/* ── FULL-WIDTH HEADER (spans entire screen width, always) ── */}
-//         <div style={{
-//           width: "100%",
-//           padding: "12px 16px",
-//           borderBottom: "0.5px solid #e5e7eb",
-//           display: "flex",
-//           alignItems: "center",
-//           gap: 10,
-//           background: "#fff",
-//           flexShrink: 0,
-//           zIndex: 30,
-//           boxSizing: "border-box",
-//         }}>
-//           {/* ✅ ☰ always at same position — header is full width so sidebar can't push it */}
-//           <button
-//             className="hamburger-btn"
-//             onClick={() => setSidebarOpen((v) => !v)}
-//             aria-label="Toggle sidebar"
-//           >
-//             <HamburgerIcon />
-//           </button>
- 
-//           <div style={{
-//             width: 36, height: 36, background: "#eaf3de",
-//             borderRadius: 9, display: "flex", alignItems: "center",
-//             justifyContent: "center", fontSize: 18, flexShrink: 0,
-//           }}>🌱</div>
+//         {/* ── HEADER ── */}
+//         <div style={{ width: "100%", height: HEADER_H, minHeight: HEADER_H, padding: "0 16px", borderBottom: "0.5px solid #e5e7eb", display: "flex", alignItems: "center", gap: 10, background: "#fff", flexShrink: 0, zIndex: 30, boxSizing: "border-box" }}>
+//           <button className="hamburger-btn" onClick={() => setSidebarOpen(v => !v)} aria-label="Toggle sidebar"><HamburgerIcon /></button>
+//           <div style={{ width: 36, height: 36, background: "#eaf3de", borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>🌱</div>
 //           <div style={{ minWidth: 0 }}>
 //             <div style={{ fontSize: 15, fontWeight: 600, color: "#1a1a1a", whiteSpace: "nowrap" }}>AgriBot Assistant</div>
-//             <div style={{ fontSize: 11, color: "#6b7280", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-//               Ask about crops, soil, weather &amp; mandi prices
-//             </div>
+//             <div style={{ fontSize: 11, color: "#6b7280", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Ask about crops, soil, weather &amp; mandi prices</div>
 //           </div>
 //           <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
 //             <div style={{ width: 7, height: 7, background: "#4CAF50", borderRadius: "50%" }} />
@@ -249,174 +288,70 @@
 //           </div>
 //         </div>
  
-//         {/* ── BODY: Sidebar + Chat side by side, below the header ── */}
+//         {/* ── BODY ── */}
 //         <div style={{ display: "flex", flex: 1, overflow: "hidden", position: "relative" }}>
  
-//           {/* Mobile overlay */}
-//           {isMobile && sidebarOpen && (
-//             <div className="overlay-backdrop" onClick={() => setSidebarOpen(false)} />
-//           )}
+//           {isMobile && sidebarOpen && <div className="overlay-backdrop" onClick={() => setSidebarOpen(false)} />}
  
-//           {/* ── Sidebar ── */}
-//           <div
-//             className="sidebar-transition"
-//             style={{
-//               width: SIDEBAR_WIDTH,
-//               background: "#1a3a1a",
-//               color: "#e8f5e8",
-//               display: "flex",
-//               flexDirection: "column",
-//               flexShrink: 0,
-//               ...(isMobile ? {
-//                 position: "fixed",
-//                 // starts just below the header (62px approx)
-//                 top: 62,
-//                 left: 0,
-//                 // only fill remaining screen height
-//                 height: "calc(100vh - 62px)",
-//                 zIndex: 50,
-//                 transform: sidebarOpen ? "translateX(0)" : `translateX(-${SIDEBAR_WIDTH}px)`,
-//               } : {
-//                 position: "relative",
-//                 transform: sidebarOpen ? "translateX(0)" : `translateX(-${SIDEBAR_WIDTH}px)`,
-//                 marginRight: sidebarOpen ? 0 : -SIDEBAR_WIDTH,
-//               }),
-//             }}
-//           >
-//             {/* Sidebar Logo */}
+//           {/* Sidebar */}
+//           <div className="sidebar-transition" style={{
+//             width: SIDEBAR_WIDTH, background: "#1a3a1a", color: "#e8f5e8",
+//             display: "flex", flexDirection: "column", flexShrink: 0,
+//             ...(isMobile
+//               ? { position: "fixed", top: HEADER_H, left: 0, height: `calc(100% - ${HEADER_H}px)`, zIndex: 50, transform: sidebarOpen ? "translateX(0)" : `translateX(-${SIDEBAR_WIDTH}px)` }
+//               : { position: "relative", transform: sidebarOpen ? "translateX(0)" : `translateX(-${SIDEBAR_WIDTH}px)`, marginRight: sidebarOpen ? 0 : -SIDEBAR_WIDTH }),
+//           }}>
 //             <div style={{ padding: "20px 16px 16px", borderBottom: "0.5px solid rgba(255,255,255,0.1)" }}>
 //               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-//                 <div style={{
-//                   width: 40, height: 40, background: "#2d5a2d",
-//                   borderRadius: 10, display: "flex", alignItems: "center",
-//                   justifyContent: "center", fontSize: 20,
-//                 }}>🌾</div>
+//                 <div style={{ width: 40, height: 40, background: "#2d5a2d", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>🌾</div>
 //                 <div>
 //                   <div style={{ fontSize: 16, fontWeight: 600 }}>AgriBot</div>
 //                   <div style={{ fontSize: 11, color: "rgba(232,245,232,0.6)" }}>Smart Farming Assistant</div>
 //                 </div>
 //               </div>
 //             </div>
- 
-//             {/* Capabilities */}
-//             <div style={{ padding: "16px" }}>
-//               <div style={{ fontSize: 10, color: "rgba(232,245,232,0.4)", letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>
-//                 Capabilities
-//               </div>
-//               {[
-//                 { icon: "📚", label: "PDF knowledge base" },
-//                 { icon: "🌤️", label: "Live weather info" },
-//                 { icon: "💹", label: "Mandi prices" },
-//                 { icon: "🔍", label: "Web search fallback" },
-//                 { icon: "💬", label: "Chat with memory" },
-//               ].map((item) => (
-//                 <div key={item.label} style={{
-//                   display: "flex", alignItems: "center", gap: 10,
-//                   padding: "7px 8px", borderRadius: 8, marginBottom: 2,
-//                   fontSize: 13, color: "rgba(232,245,232,0.8)",
-//                 }}>
-//                   <span style={{ fontSize: 14 }}>{item.icon}</span>
-//                   {item.label}
+//             <div style={{ padding: 16 }}>
+//               <div style={{ fontSize: 10, color: "rgba(232,245,232,0.4)", letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>Capabilities</div>
+//               {[{ icon: "📚", label: "PDF knowledge base" }, { icon: "🌤️", label: "Live weather info" }, { icon: "💹", label: "Mandi prices" }, { icon: "🔍", label: "Web search fallback" }, { icon: "💬", label: "Chat with memory" }].map(item => (
+//                 <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 8px", borderRadius: 8, marginBottom: 2, fontSize: 13, color: "rgba(232,245,232,0.8)" }}>
+//                   <span style={{ fontSize: 14 }}>{item.icon}</span>{item.label}
 //                 </div>
 //               ))}
 //             </div>
- 
-//             {/* Powered by */}
 //             <div style={{ padding: "0 16px 16px" }}>
-//               <div style={{ fontSize: 10, color: "rgba(232,245,232,0.4)", letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>
-//                 Powered by
-//               </div>
-//               {["Groq LLaMA 3.3 70b", "Pinecone Vector DB", "BGE Embeddings + Reranker", "LangChain Agent"].map((item) => (
-//                 <div key={item} style={{ fontSize: 12, color: "rgba(232,245,232,0.6)", padding: "4px 8px", marginBottom: 2 }}>
-//                   · {item}
-//                 </div>
+//               <div style={{ fontSize: 10, color: "rgba(232,245,232,0.4)", letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>Powered by</div>
+//               {["Groq LLaMA 3.3 70b", "Pinecone Vector DB", "BGE Embeddings + Reranker", "LangChain Agent"].map(item => (
+//                 <div key={item} style={{ fontSize: 12, color: "rgba(232,245,232,0.6)", padding: "4px 8px", marginBottom: 2 }}>· {item}</div>
 //               ))}
 //             </div>
- 
-//             {/* Footer */}
 //             <div style={{ marginTop: "auto", padding: 16, borderTop: "0.5px solid rgba(255,255,255,0.1)" }}>
-//               <button
-//                 onClick={() => {
-//                   setMessages([{ ...INITIAL_MESSAGE, timestamp: new Date() }]);
-//                   if (isMobile) setSidebarOpen(false);
-//                 }}
-//                 style={{
-//                   width: "100%", padding: "8px 0",
-//                   background: "rgba(255,255,255,0.08)",
-//                   border: "0.5px solid rgba(255,255,255,0.15)",
-//                   borderRadius: 8, color: "rgba(232,245,232,0.7)",
-//                   fontSize: 13, cursor: "pointer",
-//                 }}
-//               >
+//               <button onClick={() => { setMessages([{ ...INITIAL_MESSAGE, timestamp: new Date() }]); if (isMobile) setSidebarOpen(false); }}
+//                 style={{ width: "100%", padding: "8px 0", background: "rgba(255,255,255,0.08)", border: "0.5px solid rgba(255,255,255,0.15)", borderRadius: 8, color: "rgba(232,245,232,0.7)", fontSize: 13, cursor: "pointer" }}>
 //                 🗑️ Clear conversation
 //               </button>
 //             </div>
 //           </div>
  
-//           {/* ── Chat area ── */}
+//           {/* Chat */}
 //           <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "#fafaf8", minWidth: 0, overflow: "hidden" }}>
  
-//             {/* Messages or Landing */}
 //             {isEmptyChat ? (
-//               <div style={{
-//                 flex: 1, display: "flex", flexDirection: "column",
-//                 alignItems: "center", justifyContent: "center",
-//                 padding: "24px 16px 16px", animation: "fadeSlideUp 0.4s ease",
-//               }}>
+//               <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 16px 16px", animation: "fadeSlideUp 0.4s ease", overflowY: "auto" }}>
 //                 <div style={{ textAlign: "center", marginBottom: 36 }}>
-//                   <div style={{
-//                     width: 72, height: 72, background: "#2d5a2d",
-//                     borderRadius: 20, display: "flex", alignItems: "center",
-//                     justifyContent: "center", fontSize: 36, margin: "0 auto 16px",
-//                     boxShadow: "0 8px 24px rgba(45,90,45,0.2)",
-//                   }}>🌾</div>
-//                   <h1 style={{ fontSize: "clamp(20px, 4vw, 28px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 8 }}>
-//                     Namaste! I&apos;m AgriBot 🙏
-//                   </h1>
-//                   <p style={{ fontSize: "clamp(13px, 2vw, 15px)", color: "#6b7280", maxWidth: 480, lineHeight: 1.6 }}>
-//                     Your AI-powered smart farming assistant. Ask me about crops, soil health, pest management, mandi prices, or government schemes.
-//                   </p>
+//                   <div style={{ width: 72, height: 72, background: "#2d5a2d", borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36, margin: "0 auto 16px", boxShadow: "0 8px 24px rgba(45,90,45,0.2)" }}>🌾</div>
+//                   <h1 style={{ fontSize: "clamp(20px,4vw,28px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 8 }}>Namaste! I&apos;m AgriBot 🙏</h1>
+//                   <p style={{ fontSize: "clamp(13px,2vw,15px)", color: "#6b7280", maxWidth: 480, lineHeight: 1.6 }}>Your AI-powered smart farming assistant. Ask me about crops, soil health, pest management, mandi prices, or government schemes.</p>
 //                 </div>
- 
-//                 <div style={{
-//                   width: "100%", maxWidth: 620, background: "#fff",
-//                   border: "1.5px solid #e5e7eb", borderRadius: 16,
-//                   padding: "12px 14px", display: "flex", alignItems: "center", gap: 10,
-//                   boxShadow: "0 4px 20px rgba(0,0,0,0.07)", marginBottom: 20,
-//                 }}>
-//                   <input
-//                     value={input}
-//                     onChange={(e) => setInput(e.target.value)}
-//                     onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
-//                     placeholder="Ask your farming question..."
-//                     autoFocus
-//                     style={{ flex: 1, background: "none", border: "none", outline: "none", fontSize: 15, color: "#1a1a1a" }}
-//                   />
-//                   <button
-//                     className="send-btn"
-//                     onClick={() => sendMessage()}
-//                     disabled={loading || !input.trim()}
-//                     style={{
-//                       width: 38, height: 38,
-//                       background: input.trim() ? "#2d5a2d" : "#e5e7eb",
-//                       border: "none", borderRadius: 10, color: "white",
-//                       cursor: input.trim() ? "pointer" : "not-allowed",
-//                       fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center",
-//                     }}
-//                   >➤</button>
+//                 <div style={{ width: "100%", maxWidth: 620, background: "#fff", border: "1.5px solid #e5e7eb", borderRadius: 16, padding: "12px 14px", display: "flex", alignItems: "center", gap: 10, boxShadow: "0 4px 20px rgba(0,0,0,0.07)", marginBottom: 20 }}>
+//                   <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && sendMessage()} placeholder="Ask your farming question..." autoFocus
+//                     style={{ flex: 1, background: "none", border: "none", outline: "none", fontSize: 15, color: "#1a1a1a" }} />
+//                   <button className="send-btn" onClick={() => sendMessage()} disabled={loading || !input.trim()}
+//                     style={{ width: 38, height: 38, background: input.trim() ? "#2d5a2d" : "#e5e7eb", border: "none", borderRadius: 10, color: "white", cursor: input.trim() ? "pointer" : "not-allowed", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>➤</button>
 //                 </div>
- 
 //                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", maxWidth: 640 }}>
-//                   {quickButtons.map((btn) => (
+//                   {quickButtons.map(btn => (
 //                     <button key={btn.label} className="quick-chip" onClick={() => sendMessage(btn.query)} disabled={loading}
-//                       style={{
-//                         display: "flex", alignItems: "center", gap: 7,
-//                         padding: "9px 16px", border: "1px solid #d1fae5",
-//                         borderRadius: 24, background: "#f0fdf4",
-//                         color: "#2d5a2d", fontSize: 13, fontWeight: 500,
-//                         cursor: "pointer", whiteSpace: "nowrap",
-//                       }}
-//                     >
+//                       style={{ display: "flex", alignItems: "center", gap: 7, padding: "9px 16px", border: "1px solid #d1fae5", borderRadius: 24, background: "#f0fdf4", color: "#2d5a2d", fontSize: 13, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}>
 //                       <span style={{ fontSize: 16 }}>{btn.icon}</span>
 //                       <span className="chip-label">{btn.label}</span>
 //                     </button>
@@ -424,55 +359,33 @@
 //                 </div>
 //               </div>
 //             ) : (
-//               <div style={{
-//                 flex: 1, overflowY: "auto", padding: "20px 16px",
-//                 display: "flex", flexDirection: "column", alignItems: "center",
-//               }}>
+//               <div style={{ flex: 1, overflowY: "auto", padding: "20px 16px", display: "flex", flexDirection: "column", alignItems: "center" }}>
 //                 <div style={{ width: "100%", maxWidth: 760, display: "flex", flexDirection: "column", gap: 16 }}>
 //                   {messages.map((msg, i) => (
-//                     <div key={i} style={{
-//                       display: "flex", gap: 10,
-//                       flexDirection: msg.role === "user" ? "row-reverse" : "row",
-//                       alignItems: "flex-start",
-//                       animation: "fadeSlideUp 0.25s ease",
-//                     }}>
-//                       <div style={{
-//                         width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-//                         display: "flex", alignItems: "center", justifyContent: "center",
-//                         background: msg.role === "assistant" ? "#2d5a2d" : "#eaf3de",
-//                         fontSize: 14, fontWeight: 600, overflow: "hidden",
-//                       }}>
+//                     <div key={i} style={{ display: "flex", gap: 10, flexDirection: msg.role === "user" ? "row-reverse" : "row", alignItems: "flex-start", animation: "fadeSlideUp 0.25s ease" }}>
+//                       <div style={{ width: 36, height: 36, borderRadius: "50%", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: msg.role === "assistant" ? "#2d5a2d" : "#eaf3de", overflow: "hidden" }}>
 //                         {msg.role === "assistant" ? <span style={{ fontSize: 18 }}>🌾</span> : <FarmerIcon />}
 //                       </div>
-//                       <div style={{
-//                         maxWidth: "min(72%, 560px)", padding: "10px 14px",
-//                         borderRadius: msg.role === "user" ? "14px 2px 14px 14px" : "2px 14px 14px 14px",
-//                         background: msg.role === "user" ? "#2d5a2d" : "#fff",
-//                         color: msg.role === "user" ? "#e8f5e8" : "#1a1a1a",
-//                         fontSize: 14,
-//                         border: msg.role === "assistant" ? "0.5px solid #e5e7eb" : "none",
-//                         boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-//                       }}>
-//                         {msg.role === "assistant" ? formatMessage(msg.content) : msg.content}
-//                         <div style={{
-//                           display: "flex", justifyContent: "space-between", alignItems: "center",
-//                           marginTop: 8, paddingTop: 6,
-//                           borderTop: msg.role === "assistant" ? "0.5px solid #f0f0f0" : "none",
-//                         }}>
+//                       <div style={{ maxWidth: "min(72%, 560px)", padding: "10px 14px", borderRadius: msg.role === "user" ? "14px 2px 14px 14px" : "2px 14px 14px 14px", background: msg.role === "user" ? "#2d5a2d" : "#fff", color: msg.role === "user" ? "#e8f5e8" : "#1a1a1a", fontSize: 14, border: msg.role === "assistant" ? "0.5px solid #e5e7eb" : "none", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}>
+ 
+//                         {/* ── Markdown for assistant, plain for user ── */}
+//                         {msg.role === "assistant"
+//                           ? <MarkdownContent content={msg.content} />
+//                           : <p style={{ margin: 0, lineHeight: 1.65, whiteSpace: "pre-wrap" }}>{msg.content}</p>
+//                         }
+ 
+//                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8, paddingTop: 6, borderTop: msg.role === "assistant" ? "0.5px solid #f0f0f0" : "none", gap: 6, flexWrap: "wrap" }}>
 //                           {msg.role === "assistant" && msg.model_used ? (
-//                             <span style={{
-//                               fontSize: 11,
-//                               background: msg.model_used === "Groq" ? "#f0fdf4" : "#eff6ff",
-//                               color: msg.model_used === "Groq" ? "#3b6d11" : "#1d4ed8",
-//                               border: `0.5px solid ${msg.model_used === "Groq" ? "#bbf7d0" : "#bfdbfe"}`,
-//                               borderRadius: 20, padding: "3px 10px", fontWeight: 500,
-//                             }}>
+//                             <span style={{ fontSize: 11, background: msg.model_used === "Groq" ? "#f0fdf4" : "#eff6ff", color: msg.model_used === "Groq" ? "#3b6d11" : "#1d4ed8", border: `0.5px solid ${msg.model_used === "Groq" ? "#bbf7d0" : "#bfdbfe"}`, borderRadius: 20, padding: "3px 10px", fontWeight: 500 }}>
 //                               🤖 {msg.model_used === "Groq" ? "Groq LLaMA-3.3-70b" : "Gemini 2.5 Flash"}
 //                             </span>
 //                           ) : <span />}
-//                           <span style={{ fontSize: 10, color: msg.role === "user" ? "rgba(232,245,232,0.5)" : "#9ca3af" }}>
-//                             {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-//                           </span>
+//                           <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
+//                             {msg.role === "assistant" && <CopyButton text={msg.content} />}
+//                             <span style={{ fontSize: 10, color: msg.role === "user" ? "rgba(232,245,232,0.5)" : "#9ca3af" }}>
+//                               {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+//                             </span>
+//                           </div>
 //                         </div>
 //                       </div>
 //                     </div>
@@ -480,22 +393,9 @@
  
 //                   {loading && (
 //                     <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-//                       <div style={{
-//                         width: 36, height: 36, borderRadius: "50%",
-//                         background: "#2d5a2d", display: "flex",
-//                         alignItems: "center", justifyContent: "center", fontSize: 18,
-//                       }}>🌾</div>
-//                       <div style={{
-//                         padding: "12px 16px", background: "#fff",
-//                         borderRadius: "2px 14px 14px 14px",
-//                         border: "0.5px solid #e5e7eb", display: "flex", gap: 5, alignItems: "center",
-//                       }}>
-//                         {[0, 1, 2].map((i) => (
-//                           <div key={i} style={{
-//                             width: 6, height: 6, borderRadius: "50%", background: "#3b6d11",
-//                             animation: "bounce 1.2s infinite", animationDelay: `${i * 0.2}s`,
-//                           }} />
-//                         ))}
+//                       <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#2d5a2d", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🌾</div>
+//                       <div style={{ padding: "12px 16px", background: "#fff", borderRadius: "2px 14px 14px 14px", border: "0.5px solid #e5e7eb", display: "flex", gap: 5, alignItems: "center" }}>
+//                         {[0, 1, 2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: "#3b6d11", animation: "bounce 1.2s infinite", animationDelay: `${i * 0.2}s` }} />)}
 //                       </div>
 //                     </div>
 //                   )}
@@ -504,50 +404,24 @@
 //               </div>
 //             )}
  
-//             {/* Input area */}
+//             {/* Input bar */}
 //             {!isEmptyChat && (
 //               <div style={{ padding: "10px 16px 14px", background: "#fff", borderTop: "0.5px solid #e5e7eb", flexShrink: 0 }}>
 //                 <div style={{ maxWidth: 760, margin: "0 auto" }}>
-//                   <div className="chips-row" style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
-//                     {quickButtons.map((btn) => (
+//                   <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
+//                     {quickButtons.map(btn => (
 //                       <button key={btn.label} className="quick-chip" onClick={() => sendMessage(btn.query)} disabled={loading}
-//                         style={{
-//                           fontSize: 11, padding: "5px 12px",
-//                           border: "0.5px solid #d1fae5", borderRadius: 20,
-//                           background: "#f0fdf4", color: "#3b6d11", cursor: "pointer",
-//                           display: "flex", alignItems: "center", gap: 4,
-//                         }}
-//                       >
+//                         style={{ fontSize: 11, padding: "5px 12px", border: "0.5px solid #d1fae5", borderRadius: 20, background: "#f0fdf4", color: "#3b6d11", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
 //                         <span>{btn.icon}</span>
 //                         <span className="chip-label">{btn.label}</span>
 //                       </button>
 //                     ))}
 //                   </div>
-//                   <div style={{
-//                     display: "flex", gap: 10, alignItems: "center",
-//                     background: "#f9fafb", border: "1px solid #e5e7eb",
-//                     borderRadius: 14, padding: "10px 14px",
-//                   }}>
-//                     <input
-//                       value={input}
-//                       onChange={(e) => setInput(e.target.value)}
-//                       onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
-//                       placeholder="Ask your farming question... (Press Enter to send)"
-//                       disabled={loading}
-//                       style={{ flex: 1, background: "none", border: "none", outline: "none", fontSize: 14, color: "#1a1a1a" }}
-//                     />
-//                     <button
-//                       className="send-btn"
-//                       onClick={() => sendMessage()}
-//                       disabled={loading || !input.trim()}
-//                       style={{
-//                         width: 36, height: 36,
-//                         background: input.trim() ? "#2d5a2d" : "#e5e7eb",
-//                         border: "none", borderRadius: 9, color: "white",
-//                         cursor: input.trim() ? "pointer" : "not-allowed",
-//                         fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center",
-//                       }}
-//                     >➤</button>
+//                   <div style={{ display: "flex", gap: 10, alignItems: "center", background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 14, padding: "10px 14px" }}>
+//                     <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && sendMessage()} placeholder="Ask your farming question... (Press Enter to send)" disabled={loading}
+//                       style={{ flex: 1, background: "none", border: "none", outline: "none", fontSize: 14, color: "#1a1a1a" }} />
+//                     <button className="send-btn" onClick={() => sendMessage()} disabled={loading || !input.trim()}
+//                       style={{ width: 36, height: 36, background: input.trim() ? "#2d5a2d" : "#e5e7eb", border: "none", borderRadius: 9, color: "white", cursor: input.trim() ? "pointer" : "not-allowed", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>➤</button>
 //                   </div>
 //                 </div>
 //               </div>
@@ -558,6 +432,19 @@
 //     </>
 //   );
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 "use client";
@@ -751,7 +638,8 @@ export default function Home() {
   const [loading, setLoading]         = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile]       = useState(false);
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatEndRef   = useRef<HTMLDivElement>(null);
+  const inputRef     = useRef<HTMLInputElement>(null);   // ← FIX: ref to scroll input into view
  
   useEffect(() => {
     const checkSize = () => {
@@ -807,6 +695,7 @@ export default function Home() {
     <>
       <style>{`
         .agri-markdown > *:last-child { margin-bottom: 0 !important; }
+ 
         @keyframes bounce {
           0%, 60%, 100% { transform: translateY(0); }
           30%            { transform: translateY(-6px); }
@@ -816,6 +705,7 @@ export default function Home() {
           to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+ 
         .sidebar-transition {
           transition: transform 0.28s cubic-bezier(0.4,0,0.2,1),
                       margin  0.28s cubic-bezier(0.4,0,0.2,1);
@@ -827,17 +717,48 @@ export default function Home() {
         .overlay-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 40; animation: fadeIn 0.2s ease; }
         .hamburger-btn { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: none; border: 0.5px solid #e5e7eb; border-radius: 8px; cursor: pointer; color: #3b6d11; flex-shrink: 0; transition: background 0.15s ease; }
         .hamburger-btn:hover { background: #f0fdf4; }
+ 
+        /* ── FIX 1: Lock entire app on mobile so header never scrolls away ── */
         @media (max-width: 767px) {
-          .app-root { position: fixed !important; inset: 0 !important; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+          .app-root {
+            position: fixed !important;
+            inset: 0 !important;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+          }
+          /* FIX 2: Hide chip labels on small screens to save space */
           .chip-label { display: none; }
+ 
+          /* FIX 3: Full-width messages on mobile — no wasted side margins */
+          .messages-inner { max-width: 100% !important; padding: 0 !important; }
+ 
+          /* FIX 4: Bubbles use more width on mobile */
+          .bubble { max-width: 88% !important; }
+ 
+          /* FIX 5: Input bar full width, no centering wrapper */
+          .input-inner { max-width: 100% !important; }
+ 
+          /* FIX 6: Reduce chat area horizontal padding on mobile */
+          .messages-scroll { padding: 14px 10px !important; }
+          .input-bar-wrap  { padding: 8px 10px 10px !important; }
         }
       `}</style>
  
-      <div className="app-root" style={{ display: "flex", flexDirection: "column", height: "100vh", fontFamily: "'Inter',sans-serif", overflow: "hidden" }}>
+      <div className="app-root" style={{
+        display: "flex", flexDirection: "column",
+        height: "100vh", fontFamily: "'Inter',sans-serif", overflow: "hidden",
+      }}>
  
-        {/* ── HEADER ── */}
-        <div style={{ width: "100%", height: HEADER_H, minHeight: HEADER_H, padding: "0 16px", borderBottom: "0.5px solid #e5e7eb", display: "flex", alignItems: "center", gap: 10, background: "#fff", flexShrink: 0, zIndex: 30, boxSizing: "border-box" }}>
-          <button className="hamburger-btn" onClick={() => setSidebarOpen(v => !v)} aria-label="Toggle sidebar"><HamburgerIcon /></button>
+        {/* ══ HEADER — always visible ══ */}
+        <div style={{
+          width: "100%", height: HEADER_H, minHeight: HEADER_H,
+          padding: "0 16px", borderBottom: "0.5px solid #e5e7eb",
+          display: "flex", alignItems: "center", gap: 10,
+          background: "#fff", flexShrink: 0, zIndex: 30, boxSizing: "border-box",
+        }}>
+          <button className="hamburger-btn" onClick={() => setSidebarOpen(v => !v)} aria-label="Toggle sidebar">
+            <HamburgerIcon />
+          </button>
           <div style={{ width: 36, height: 36, background: "#eaf3de", borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>🌱</div>
           <div style={{ minWidth: 0 }}>
             <div style={{ fontSize: 15, fontWeight: 600, color: "#1a1a1a", whiteSpace: "nowrap" }}>AgriBot Assistant</div>
@@ -849,12 +770,12 @@ export default function Home() {
           </div>
         </div>
  
-        {/* ── BODY ── */}
+        {/* ══ BODY ══ */}
         <div style={{ display: "flex", flex: 1, overflow: "hidden", position: "relative" }}>
  
           {isMobile && sidebarOpen && <div className="overlay-backdrop" onClick={() => setSidebarOpen(false)} />}
  
-          {/* Sidebar */}
+          {/* ── Sidebar ── */}
           <div className="sidebar-transition" style={{
             width: SIDEBAR_WIDTH, background: "#1a3a1a", color: "#e8f5e8",
             display: "flex", flexDirection: "column", flexShrink: 0,
@@ -893,10 +814,11 @@ export default function Home() {
             </div>
           </div>
  
-          {/* Chat */}
+          {/* ── Chat area ── */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "#fafaf8", minWidth: 0, overflow: "hidden" }}>
  
             {isEmptyChat ? (
+              /* Landing */
               <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 16px 16px", animation: "fadeSlideUp 0.4s ease", overflowY: "auto" }}>
                 <div style={{ textAlign: "center", marginBottom: 36 }}>
                   <div style={{ width: 72, height: 72, background: "#2d5a2d", borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36, margin: "0 auto 16px", boxShadow: "0 8px 24px rgba(45,90,45,0.2)" }}>🌾</div>
@@ -920,16 +842,32 @@ export default function Home() {
                 </div>
               </div>
             ) : (
-              <div style={{ flex: 1, overflowY: "auto", padding: "20px 16px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <div style={{ width: "100%", maxWidth: 760, display: "flex", flexDirection: "column", gap: 16 }}>
+              /* ── Messages ── */
+              <div
+                className="messages-scroll"
+                style={{ flex: 1, overflowY: "auto", padding: "14px 12px", display: "flex", flexDirection: "column", alignItems: "center" }}
+              >
+                {/*
+                  FIX: maxWidth 760 is great for desktop.
+                  On mobile the CSS override sets max-width:100% so bubbles
+                  use the full screen width with just the small padding above.
+                */}
+                <div
+                  className="messages-inner"
+                  style={{ width: "100%", maxWidth: 760, display: "flex", flexDirection: "column", gap: 14 }}
+                >
                   {messages.map((msg, i) => (
-                    <div key={i} style={{ display: "flex", gap: 10, flexDirection: msg.role === "user" ? "row-reverse" : "row", alignItems: "flex-start", animation: "fadeSlideUp 0.25s ease" }}>
-                      <div style={{ width: 36, height: 36, borderRadius: "50%", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: msg.role === "assistant" ? "#2d5a2d" : "#eaf3de", overflow: "hidden" }}>
-                        {msg.role === "assistant" ? <span style={{ fontSize: 18 }}>🌾</span> : <FarmerIcon />}
+                    <div key={i} style={{ display: "flex", gap: 8, flexDirection: msg.role === "user" ? "row-reverse" : "row", alignItems: "flex-start", animation: "fadeSlideUp 0.25s ease" }}>
+                      {/* Avatar */}
+                      <div style={{ width: 34, height: 34, borderRadius: "50%", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: msg.role === "assistant" ? "#2d5a2d" : "#eaf3de", overflow: "hidden" }}>
+                        {msg.role === "assistant" ? <span style={{ fontSize: 17 }}>🌾</span> : <FarmerIcon />}
                       </div>
-                      <div style={{ maxWidth: "min(72%, 560px)", padding: "10px 14px", borderRadius: msg.role === "user" ? "14px 2px 14px 14px" : "2px 14px 14px 14px", background: msg.role === "user" ? "#2d5a2d" : "#fff", color: msg.role === "user" ? "#e8f5e8" : "#1a1a1a", fontSize: 14, border: msg.role === "assistant" ? "0.5px solid #e5e7eb" : "none", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}>
  
-                        {/* ── Markdown for assistant, plain for user ── */}
+                      {/* Bubble — .bubble class gets overridden to 88% on mobile */}
+                      <div
+                        className="bubble"
+                        style={{ maxWidth: "min(72%, 560px)", padding: "10px 13px", borderRadius: msg.role === "user" ? "14px 2px 14px 14px" : "2px 14px 14px 14px", background: msg.role === "user" ? "#2d5a2d" : "#fff", color: msg.role === "user" ? "#e8f5e8" : "#1a1a1a", fontSize: 14, border: msg.role === "assistant" ? "0.5px solid #e5e7eb" : "none", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}
+                      >
                         {msg.role === "assistant"
                           ? <MarkdownContent content={msg.content} />
                           : <p style={{ margin: 0, lineHeight: 1.65, whiteSpace: "pre-wrap" }}>{msg.content}</p>
@@ -953,8 +891,8 @@ export default function Home() {
                   ))}
  
                   {loading && (
-                    <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#2d5a2d", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🌾</div>
+                    <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                      <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#2d5a2d", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}>🌾</div>
                       <div style={{ padding: "12px 16px", background: "#fff", borderRadius: "2px 14px 14px 14px", border: "0.5px solid #e5e7eb", display: "flex", gap: 5, alignItems: "center" }}>
                         {[0, 1, 2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: "#3b6d11", animation: "bounce 1.2s infinite", animationDelay: `${i * 0.2}s` }} />)}
                       </div>
@@ -965,24 +903,46 @@ export default function Home() {
               </div>
             )}
  
-            {/* Input bar */}
+            {/* ══ INPUT BAR — always anchored at bottom, never hidden ══ */}
             {!isEmptyChat && (
-              <div style={{ padding: "10px 16px 14px", background: "#fff", borderTop: "0.5px solid #e5e7eb", flexShrink: 0 }}>
-                <div style={{ maxWidth: 760, margin: "0 auto" }}>
-                  <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
+              <div
+                className="input-bar-wrap"
+                style={{
+                  padding: "8px 12px 12px",
+                  background: "#fff",
+                  borderTop: "0.5px solid #e5e7eb",
+                  flexShrink: 0,          // ← never shrink or push offscreen
+                  // On mobile, safe-area-inset-bottom keeps it above the home bar
+                  paddingBottom: "max(12px, env(safe-area-inset-bottom))",
+                }}
+              >
+                {/* Quick chips */}
+                <div style={{ maxWidth: 760, margin: "0 auto" }} className="input-inner">
+                  <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>
                     {quickButtons.map(btn => (
                       <button key={btn.label} className="quick-chip" onClick={() => sendMessage(btn.query)} disabled={loading}
-                        style={{ fontSize: 11, padding: "5px 12px", border: "0.5px solid #d1fae5", borderRadius: 20, background: "#f0fdf4", color: "#3b6d11", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
+                        style={{ fontSize: 11, padding: "5px 11px", border: "0.5px solid #d1fae5", borderRadius: 20, background: "#f0fdf4", color: "#3b6d11", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
                         <span>{btn.icon}</span>
                         <span className="chip-label">{btn.label}</span>
                       </button>
                     ))}
                   </div>
-                  <div style={{ display: "flex", gap: 10, alignItems: "center", background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 14, padding: "10px 14px" }}>
-                    <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && sendMessage()} placeholder="Ask your farming question... (Press Enter to send)" disabled={loading}
-                      style={{ flex: 1, background: "none", border: "none", outline: "none", fontSize: 14, color: "#1a1a1a" }} />
+ 
+                  {/* Text input row */}
+                  <div style={{ display: "flex", gap: 8, alignItems: "center", background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 14, padding: "10px 13px" }}>
+                    <input
+                      ref={inputRef}
+                      value={input}
+                      onChange={e => setInput(e.target.value)}
+                      onKeyDown={e => e.key === "Enter" && !e.shiftKey && sendMessage()}
+                      // ── FIX: scroll input into view when keyboard opens on mobile ──
+                      onFocus={() => setTimeout(() => inputRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 300)}
+                      placeholder="Ask your farming question..."
+                      disabled={loading}
+                      style={{ flex: 1, background: "none", border: "none", outline: "none", fontSize: 14, color: "#1a1a1a", minWidth: 0 }}
+                    />
                     <button className="send-btn" onClick={() => sendMessage()} disabled={loading || !input.trim()}
-                      style={{ width: 36, height: 36, background: input.trim() ? "#2d5a2d" : "#e5e7eb", border: "none", borderRadius: 9, color: "white", cursor: input.trim() ? "pointer" : "not-allowed", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>➤</button>
+                      style={{ width: 36, height: 36, background: input.trim() ? "#2d5a2d" : "#e5e7eb", border: "none", borderRadius: 9, color: "white", cursor: input.trim() ? "pointer" : "not-allowed", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>➤</button>
                   </div>
                 </div>
               </div>
@@ -993,3 +953,4 @@ export default function Home() {
     </>
   );
 }
+
