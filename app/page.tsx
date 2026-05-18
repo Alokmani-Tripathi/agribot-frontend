@@ -329,8 +329,10 @@ export default function Home() {
             padding-top: env(safe-area-inset-top);
           }
  
-          /* Hide chip labels on small screens to save space */
+          /* Hide chip labels ONLY inside the bottom input bar on mobile.
+             Landing page chips (.landing-chip-label) always stay visible. */
           .chip-label { display: none; }
+          .landing-chip-label { display: inline !important; }
  
           /* Full-width messages on mobile — no wasted side margins */
           .messages-inner { max-width: 100% !important; padding: 0 !important; }
@@ -526,7 +528,8 @@ export default function Home() {
                     <button key={btn.label} className="quick-chip" onClick={() => sendMessage(btn.query)} disabled={loading}
                       style={{ display: "flex", alignItems: "center", gap: 7, padding: "9px 16px", border: "1px solid #d1fae5", borderRadius: 24, background: "#f0fdf4", color: "#2d5a2d", fontSize: 13, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}>
                       <span style={{ fontSize: 16 }}>{btn.icon}</span>
-                      <span className="chip-label">{btn.label}</span>
+                      {/* landing-chip-label always visible on ALL screen sizes including mobile */}
+                      <span className="landing-chip-label">{btn.label}</span>
                     </button>
                   ))}
                 </div>
@@ -635,16 +638,18 @@ export default function Home() {
                   }}
                 >
                   <div style={{ maxWidth: 760, margin: "0 auto" }} className="input-inner">
-                    {/* Quick chips */}
-                    <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>
-                      {quickButtons.map(btn => (
-                        <button key={btn.label} className="quick-chip" onClick={() => sendMessage(btn.query)} disabled={loading}
-                          style={{ fontSize: 11, padding: "5px 11px", border: "0.5px solid #d1fae5", borderRadius: 20, background: "#f0fdf4", color: "#3b6d11", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
-                          <span>{btn.icon}</span>
-                          <span className="chip-label">{btn.label}</span>
-                        </button>
-                      ))}
-                    </div>
+                    {/* Quick chips — hidden on mobile, visible on desktop only */}
+                    {!isMobile && (
+                      <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>
+                        {quickButtons.map(btn => (
+                          <button key={btn.label} className="quick-chip" onClick={() => sendMessage(btn.query)} disabled={loading}
+                            style={{ fontSize: 11, padding: "5px 11px", border: "0.5px solid #d1fae5", borderRadius: 20, background: "#f0fdf4", color: "#3b6d11", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
+                            <span>{btn.icon}</span>
+                            <span className="chip-label">{btn.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
  
                     {/* Text input row */}
                     <div style={{ display: "flex", gap: 8, alignItems: "center", background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 14, padding: "10px 13px" }}>
