@@ -208,23 +208,34 @@ export default function Home() {
   }, []);
  
   // ── FIX: Use window.visualViewport to get the REAL visible height on mobile.
-  //    This correctly accounts for browser chrome (address bar + nav bar).
-  //    We set a CSS custom property --vh that the layout uses instead of 100vh.
+  //    On Android Chrome when keyboard opens:
+  //      visualViewport.height  → shrinks (excludes keyboard)
+  //      visualViewport.offsetTop → shifts (non-zero when page scrolled)
+  //    We directly update the app-root top + height so the layout always
+  //    fits exactly the visible area — input bar never hidden behind keyboard.
   useEffect(() => {
     const updateVh = () => {
-      const h = window.visualViewport?.height ?? window.innerHeight;
+      const vv = window.visualViewport;
+      const h = vv?.height ?? window.innerHeight;
+      const offsetTop = vv?.offsetTop ?? 0;
       setViewportH(h);
-      // Also set as CSS variable for the global style tag below
       document.documentElement.style.setProperty("--app-height", `${h}px`);
+      // Directly reposition the fixed root to follow the visual viewport
+      const root = document.querySelector(".app-root") as HTMLElement | null;
+      if (root) {
+        root.style.top = `${offsetTop}px`;
+        root.style.height = `${h}px`;
+      }
     };
     updateVh();
  
     window.visualViewport?.addEventListener("resize", updateVh);
+    window.visualViewport?.addEventListener("scroll", updateVh);
     window.addEventListener("resize", updateVh);
-    // Re-measure when keyboard opens/closes
     window.addEventListener("orientationchange", updateVh);
     return () => {
       window.visualViewport?.removeEventListener("resize", updateVh);
+      window.visualViewport?.removeEventListener("scroll", updateVh);
       window.removeEventListener("resize", updateVh);
       window.removeEventListener("orientationchange", updateVh);
     };
@@ -630,10 +641,12 @@ export default function Home() {
                   className="input-bar-wrap"
                   style={{
                     padding: "10px 12px",
-                    paddingBottom: "max(20px, env(safe-area-inset-bottom))",  // more bottom breathing room
-                    background: "#ffffff",                            // white — same as before
-                    borderTop: "1px solid #d1fae5",                   // AgriBot border green
-                    boxShadow: "0 -2px 8px rgba(45,90,45,0.07)",      // green-tinted shadow
+                    paddingBottom: isMobile
+                      ? "max(28px, env(safe-area-inset-bottom))"   // generous bottom gap on mobile
+                      : "max(16px, env(safe-area-inset-bottom))",  // normal on desktop
+                    background: "#ffffff",
+                    borderTop: "1px solid #d1fae5",
+                    boxShadow: "0 -2px 8px rgba(45,90,45,0.07)",
                     flexShrink: 0,
                     zIndex: 10,
                   }}
