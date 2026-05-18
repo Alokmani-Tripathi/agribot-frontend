@@ -916,8 +916,13 @@ export default function Home() {
             /* ── CHAT MESSAGES ── */
             <div style={{
               flex: 1, overflowY: "auto", padding: "20px 16px",
-              display: "flex", flexDirection: "column", gap: 16,
+              display: "flex", flexDirection: "column", alignItems: "center",
             }}>
+              {/* Center column — same max-width as ChatGPT */}
+              <div style={{
+                width: "100%", maxWidth: 760,
+                display: "flex", flexDirection: "column", gap: 16,
+              }}>
               {messages.map((msg, i) => (
                 <div
                   key={i}
@@ -1005,6 +1010,7 @@ export default function Home() {
                 </div>
               )}
               <div ref={chatEndRef} />
+              </div> {/* end center column */}
             </div>
           )}
  
@@ -1016,6 +1022,8 @@ export default function Home() {
               borderTop: "0.5px solid #e5e7eb",
               flexShrink: 0,
             }}>
+              {/* Center column — matches messages width */}
+              <div style={{ maxWidth: 760, margin: "0 auto" }}>
               {/* Quick chips */}
               <div className="chips-row" style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
                 {quickButtons.map((btn) => (
@@ -1070,6 +1078,7 @@ export default function Home() {
                   ➤
                 </button>
               </div>
+              </div> {/* end center column */}
             </div>
           )}
         </div>
