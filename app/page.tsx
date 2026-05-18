@@ -1,4 +1,3 @@
-
 "use client";
  
 import { useState, useRef, useEffect } from "react";
@@ -336,8 +335,9 @@ export default function Home() {
           /* Full-width messages on mobile — no wasted side margins */
           .messages-inner { max-width: 100% !important; padding: 0 !important; }
  
-          /* Bubbles use more width on mobile */
+          /* User bubbles use more width on mobile; assistant bubbles are already 100% */
           .bubble { max-width: 88% !important; }
+          .bubble[data-role="assistant"] { max-width: 100% !important; flex: 1; }
  
           /* Input bar full width */
           .input-inner { max-width: 100% !important; }
@@ -576,7 +576,8 @@ export default function Home() {
                         {/* Bubble */}
                         <div
                           className="bubble"
-                          style={{ maxWidth: "min(72%, 560px)", padding: "10px 13px", borderRadius: msg.role === "user" ? "14px 2px 14px 14px" : "2px 14px 14px 14px", background: msg.role === "user" ? "#2d5a2d" : "#fff", color: msg.role === "user" ? "#e8f5e8" : "#1a1a1a", fontSize: 14, border: msg.role === "assistant" ? "0.5px solid #e5e7eb" : "none", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}
+                          data-role={msg.role}
+                          style={{ maxWidth: msg.role === "user" ? "min(72%, 560px)" : "100%", flex: msg.role === "assistant" ? 1 : undefined, padding: "10px 13px", borderRadius: msg.role === "user" ? "14px 2px 14px 14px" : "2px 14px 14px 14px", background: msg.role === "user" ? "#2d5a2d" : "#fff", color: msg.role === "user" ? "#e8f5e8" : "#1a1a1a", fontSize: 14, border: msg.role === "assistant" ? "0.5px solid #e5e7eb" : "none", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}
                         >
                           {msg.role === "assistant"
                             ? <MarkdownContent content={msg.content} />
