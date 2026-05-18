@@ -630,8 +630,8 @@ export default function Home() {
                   className="input-bar-wrap"
                   style={{
                     padding: "10px 12px",
-                    paddingBottom: "max(14px, env(safe-area-inset-bottom))",
-                    background: "#f0fdf4",                            // AgriBot light green
+                    paddingBottom: "max(20px, env(safe-area-inset-bottom))",  // more bottom breathing room
+                    background: "#ffffff",                            // white — same as before
                     borderTop: "1px solid #d1fae5",                   // AgriBot border green
                     boxShadow: "0 -2px 8px rgba(45,90,45,0.07)",      // green-tinted shadow
                     flexShrink: 0,
