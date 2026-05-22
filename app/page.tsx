@@ -482,7 +482,7 @@ export default function Home() {
             </div>
             <div style={{ padding: "0 16px 16px" }}>
               <div style={{ fontSize: 10, color: "rgba(232,245,232,0.4)", letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>Powered by</div>
-              {["Groq LLaMA 3.3 70b", "Pinecone Vector DB", "BGE Embeddings + Reranker", "LangChain Agent"].map(item => (
+              {["GPT-4o-mini", "Pinecone Vector DB", "BGE Embeddings + Reranker", "LangChain Agent"].map(item => (
                 <div key={item} style={{ fontSize: 12, color: "rgba(232,245,232,0.6)", padding: "4px 8px", marginBottom: 2 }}>· {item}</div>
               ))}
             </div>
@@ -614,9 +614,10 @@ export default function Home() {
                           }
  
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8, paddingTop: 6, borderTop: msg.role === "assistant" ? "0.5px solid #f0f0f0" : "none", gap: 6, flexWrap: "wrap" }}>
+                        
                             {msg.role === "assistant" && msg.model_used ? (
-                              <span style={{ fontSize: 11, background: msg.model_used === "Groq" ? "#f0fdf4" : "#eff6ff", color: msg.model_used === "Groq" ? "#3b6d11" : "#1d4ed8", border: `0.5px solid ${msg.model_used === "Groq" ? "#bbf7d0" : "#bfdbfe"}`, borderRadius: 20, padding: "3px 10px", fontWeight: 500 }}>
-                                🤖 {msg.model_used === "Groq" ? "Groq LLaMA-3.3-70b" : "Gemini 2.5 Flash"}
+                              <span style={{ fontSize: 11, background: msg.model_used === "Groq" ? "#f0fdf4" : msg.model_used === "GPT-4o-mini" ? "#fdf4ff" : "#eff6ff", color: msg.model_used === "Groq" ? "#3b6d11" : msg.model_used === "GPT-4o-mini" ? "#7e22ce" : "#1d4ed8", border: `0.5px solid ${msg.model_used === "Groq" ? "#bbf7d0" : msg.model_used === "GPT-4o-mini" ? "#e9d5ff" : "#bfdbfe"}`, borderRadius: 20, padding: "3px 10px", fontWeight: 500 }}>
+                                🤖 {msg.model_used === "Groq" ? "Groq LLaMA-3.3-70b" : msg.model_used === "GPT-4o-mini" ? "GPT-4o-mini" : "Gemini 2.5 Flash"}
                               </span>
                             ) : <span />}
                             <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
