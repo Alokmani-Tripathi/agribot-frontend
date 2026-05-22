@@ -482,7 +482,7 @@ export default function Home() {
             </div>
             <div style={{ padding: "0 16px 16px" }}>
               <div style={{ fontSize: 10, color: "rgba(232,245,232,0.4)", letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>Powered by</div>
-              {["GPT-4o-mini", "Pinecone Vector DB", "BGE Embeddings" , "Hybrid Search(BM25 +MMR)", "LangChain Agent"].map(item => (
+              {["GPT-4o-mini", "Pinecone Vector DB", "BGE Embeddings" , "Hybrid Search (BM25 +MMR)", "LangChain Agent"].map(item => (
                 <div key={item} style={{ fontSize: 12, color: "rgba(232,245,232,0.6)", padding: "4px 8px", marginBottom: 2 }}>· {item}</div>
               ))}
             </div>
